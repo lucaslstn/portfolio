@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CV - Lucas Lestiennes</title>
+    <link rel="icon" type="image/webp" href="assets/img/favicon.webp">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Layout global du CV */
+        .cv-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 250px;
+            gap: 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .cv-main {
+            border-left: 1px solid var(--border-color);
+            padding-left: 2rem;
+        }
+
+        .cv-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .cv-block {
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .cv-main .cv-block::before {
+            content: '';
+            position: absolute;
+            left: -2.35rem;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background: var(--text-color);
+            border-radius: 50%;
+        }
+
+        .cv-block h3 {
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.2rem;
+            color: var(--text-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .experience-item, .formation-item {
+            margin-bottom: 1.5rem;
+            padding-left: 1rem;
+            border-left: 2px solid var(--border-color);
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .item-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .item-company {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .item-date {
+            font-style: italic;
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .item-desc {
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+        }
+        
+        .contact-sidebar {
+            font-size: 0.9rem;
+            line-height: 1.8;
+        }
+
+        .contact-sidebar i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .lang-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 850px) {
+            .cv-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .cv-sidebar {
+                order: -1;
+                border-bottom: 1px solid var(--border-color);
+                padding-bottom: 2rem;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo"><a href="index.html">Lucas Lestiennes</a></div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="cv.html">CV</a></li>
+                <li><a href="certificats.html">Certificats</a></li>
+                <li><a href="bts.html">BTS SIO</a></li>
+                <li><a href="freelance.html">Freelance & Projets</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="cv-wrapper">
+            <!-- COLONNE PRINCIPALE -->
+            <div class="cv-main">
+                <div class="cv-block">
+                    <h3>Profil</h3>
+                    <p>Étudiant en systèmes et réseaux, passionné par la virtualisation, l'infrastructure réseau et la cybersécurité. Fort d'une expérience en auto-didacte et freelance, je cherche à mettre à profit mes compétences techniques.</p>
+                </div>
+
+                <div class="cv-block">
+                    <h3>Expériences Professionnelles</h3>
+                    
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <span class="item-title">Stage - Maintenance informatique & Réseau</span>
+                            <span class="item-date">2026</span>
+                        </div>
+                        <div class="item-company">Centre hospitalier Gérard Marchant</div>
+                        <div class="item-desc">Mise en production d'un PAM (Apache Guacamole).</div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <span class="item-title">Stage - Maintenance Informatique & Réseau</span>
+                            <span class="item-date">2025</span>
+                        </div>
+                        <div class="item-company">Centre hospitalier Gérard Marchant</div>
+                        <div class="item-desc">Projet lié à Apache Guacamole / LDAP.</div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <span class="item-title">Stage - Réseau Section Pro SN</span>
+                            <span class="item-date">2024</span>
+                        </div>
+                        <div class="item-company">Lycée Antoine Bourdelle</div>
+                        <div class="item-desc">Installation de pare-feu, Windows Server, Active Directory.</div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <span class="item-title">Stage - Maintenance info & surveillance réseau (Erasmus)</span>
+                            <span class="item-date">2022</span>
+                        </div>
+                        <div class="item-company">Espagne</div>
+                        <div class="item-desc">Stage en maintenance informatique et surveillance réseau.</div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <span class="item-title">Stage - Assistance Personnel</span>
+                            <span class="item-date">2021</span>
+                        </div>
+                        <div class="item-company">Gamm Vert</div>
+                        <div class="item-desc">Assistance au personnel.</div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <span class="item-title">Stage - R&D (Observation)</span>
+                            <span class="item-date">2019</span>
+                        </div>
+                        <div class="item-company">SCLE SFE</div>
+                        <div class="item-desc">Observation développeur R&D (Recherche & Développement).</div>
+                    </div>
+                </div>
+
+                <div class="cv-block">
+                    <h3>Formation</h3>
+                    <div class="formation-item">
+                        <div class="item-header">
+                            <span class="item-title">BTS SIO - Option SISR</span>
+                            <span class="item-date">2024 - 2026</span>
+                        </div>
+                        <div class="item-company">Lycée Ozenne, Toulouse</div>
+                        <div class="item-desc">Gestion réseaux, virtualisation (Proxmox, Docker), cybersécurité.</div>
+                    </div>
+                    <div class="formation-item">
+                        <div class="item-header">
+                            <span class="item-title">Bac Pro SN (Systèmes Numériques)</span>
+                            <span class="item-date">2022 - 2024</span>
+                        </div>
+                        <div class="item-company">Lycée Antoine Bourdelle, Montauban</div>
+                        <div class="item-desc">Installation, maintenance de réseaux locaux, diagnostic réseau. <strong>Mention Bien.</strong></div>
+                    </div>
+                     <div class="formation-item">
+                        <div class="item-header">
+                            <span class="item-title">Seconde Bac Pro TNE</span>
+                            <span class="item-date">2021 - 2022</span>
+                        </div>
+                        <div class="item-company">Lycée Antoine Bourdelle Montauban</div>
+                        <div class="item-desc">Initiation à la plomberie et aux systèmes énergétiques.</div>
+                    </div>
+                </div>
+
+                <div class="cv-block">
+                    <h3>Compétences Techniques & Homelab</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div>
+                            <h4 style="margin-bottom: 0.5rem; font-size: 0.9rem; text-decoration: underline;">Systèmes et Réseaux</h4>
+                            <ul style="list-style: none; font-size: 0.85rem;">
+                                <li>Pare-feu : Fortinet, Pfsense</li>
+                                <li>Matériel : Switch Cisco, Zyxel, TP-Link, NAS, NVR</li>
+                                <li>Virtu. : Proxmox (Cluster & HA), ESXi, Hyper-V</li>
+                                <li>Conteneurisation : Docker, LXC</li>
+                                <li>Services : Nextcloud, Apache2, Nginx, DNS</li>
+                                <li>Proxy : Proxy & Reverse Proxy</li>
+                                <li>Load Balancing : HAproxy, Nginx</li>
+                                <li>Cyber : IDS/IPS, Audit réseau</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h4 style="margin-bottom: 0.5rem; font-size: 0.9rem; text-decoration: underline;">Dev & Logiciels</h4>
+                            <ul style="list-style: none; font-size: 0.85rem;">
+                                <li>Langages : Python, Bash (Scripts)</li>
+                                <li style="margin-top: 0.5rem; font-weight: bold;">Logiciels :</li>
+                                <li>Pack Office</li>
+                                <li>FL Studio</li>
+                                <li>Davinci Resolve</li>
+                                <li>Adobe Premiere Pro</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLONNE LATERALE -->
+            <div class="cv-sidebar">
+                <div class="cv-block">
+                    <h3>Contact</h3>
+                    <div class="contact-sidebar">
+                        <p><i class="bi bi-geo-alt"></i> Toulouse, France</p>
+                        <p><i class="bi bi-phone"></i> 06 66 04 49 30</p>
+                        <p><i class="bi bi-envelope"></i> lucas.lestiennes@gmail.com</p>
+                    </div>
+                </div>
+
+                <div class="cv-block">
+                    <h3>Langues</h3>
+                    <div class="lang-item">
+                        <span>Anglais</span>
+                        <span style="color: #888;">B2</span>
+                    </div>
+                    <div class="lang-item">
+                        <span>Espagnol</span>
+                        <span style="color: #888;">A2</span>
+                    </div>
+                </div>
+
+                <div class="cv-block">
+                    <h3>Certifications</h3>
+                    <div style="font-size: 0.85rem; line-height: 1.4;">
+                        <p style="margin-bottom: 0.5rem;"><strong>OpenClassrooms :</strong></p>
+                        <ul style="list-style: none; padding-left: 0;">
+                            <li style="margin-bottom: 0.3rem;">Univers de la cybersécurité</li>
+                            <li style="margin-bottom: 0.3rem;">Référencement naturel (SEO)</li>
+                            <li style="margin-bottom: 0.3rem;">Bases sécurité numérique</li>
+                            <li style="margin-bottom: 0.3rem;">Réseau TCP/IP</li>
+                            <li style="margin-bottom: 0.3rem;">Community Manager</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="assets/img/cv.webp" target="_blank" style="font-size: 0.8rem; text-decoration: underline;">Voir original</a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="assets/js/script.js"></script>
+</body>
+</html>
