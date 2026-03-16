@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP4 Active Directory</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP4 : Introduction à Active Directory</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC4</p>
+<hr />
+<h2>1. Mise en place du Serveur</h2>
+<p>L'implémentation d'un annuaire Active Directory commence par l'installation d'un serveur sous <strong>Windows Server 2022</strong>.</p>
+<h3>1.1 Prérequis</h3>
+<p>Avant de promouvoir le serveur en contrôleur de domaine (DC), il est nécessaire de :</p>
+<ol>
+<li>Assigner une adresse IP statique au serveur.</li>
+<li>Donner un nom explicite à la machine (ex: <code>SRV-AD-01</code>).</li>
+</ol>
+<hr />
+<h2>2. Installation du Rôle AD DS</h2>
+<p>Le rôle <strong>AD DS</strong> (Active Directory Domain Services) est installé via le Gestionnaire de serveur.</p>
+<p><em>(Détails de l'installation et captures de configuration)</em></p>
+<p><img src="..\..\TC4\TP4_extracted\images\10000001000002AC0000013104F26E0A.png" alt="Capture AD 1" />
+<img src="..\..\TC4\TP4_extracted\images\10000001000000EC000000A908329ED1.png" alt="Capture AD 2" />
+<img src="..\..\TC4\TP4_extracted\images\100000010000030F00000168613BB637.png" alt="Capture AD 3" />
+<img src="..\..\TC4\TP4_extracted\images\100000010000014A0000016880A6F112.png" alt="Capture AD 4" />
+<img src="..\..\TC4\TP4_extracted\images\10000001000002F300000234A44B3118.png" alt="Capture AD 5" /></p>
+<hr />
+<h2>3. Promotion du Contrôleur de Domaine</h2>
+<p>Après l'installation du rôle, le serveur doit être promu pour créer une nouvelle forêt et un nouveau domaine (ex: <code>148.sio</code>).</p>
+<p><em>Note : L'octet 148 est utilisé conformément au plan d'adressage du projet.</em></p>
+
+    </div>
+</body>
+</html>

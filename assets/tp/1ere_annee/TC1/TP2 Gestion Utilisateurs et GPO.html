@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP2 Gestion Utilisateurs et GPO</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP2 : Gestion des Utilisateurs et Stratégies de Groupe (GPO)</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC1</p>
+<hr />
+<h2>Contexte</h2>
+<p>Ce travail pratique aborde l'administration système sous Windows 11, spécifiquement la gestion des utilisateurs, des groupes et la mise en place de stratégies de sécurité (GPO). L'environnement de travail est virtualisé via VirtualBox.</p>
+<hr />
+<h2>1. Concepts Fondamentaux</h2>
+<p>L'administration d'un système multi-utilisateurs repose sur plusieurs entités clés :</p>
+<ul>
+<li><strong>Utilisateur</strong> : Compte individuel permettant l'accès au système. Il est défini par un profil (identifiant/mot de passe), des données personnelles et un ensemble de droits d'accès.</li>
+<li><strong>Groupe</strong> : Entité logique rassemblant plusieurs utilisateurs. L'intérêt est de simplifier l'administration en attribuant des permissions au groupe plutôt qu'individuellement.</li>
+<li><strong>Administrateur</strong> : Super-utilisateur possédant le contrôle total sur le système (création de comptes, installation de logiciels, modification des permissions).</li>
+<li><strong>Stratégie (Policy)</strong> : Ensemble de règles de sécurité et de configuration appliquées au système (ex: complexité des mots de passe, droits d'installation).</li>
+</ul>
+<hr />
+<h2>2. Environnement Virtuel</h2>
+<p>L'utilisation de <strong>VirtualBox</strong> permet de simuler un parc informatique sans affecter la machine physique. La machine virtuelle (VM) Windows 11 utilise des ressources partagées (CPU, RAM) et un disque dur virtuel (VHD).</p>
+<h3>Gestion du Stockage</h3>
+<p>Le disque dur virtuel est reconnu par le système invité comme un disque physique standard. Il peut être partitionné (au format NTFS pour Windows) afin de séparer, par exemple, le système d'exploitation des données utilisateurs.</p>
+<hr />
+<h2>3. Administration Locale</h2>
+<h3>Gestion des Comptes et Groupes</h3>
+<p>L'outil de gestion locale (<code>lusrmgr.msc</code>) permet de créer, modifier ou supprimer des comptes et des groupes.</p>
+<ul>
+<li><strong>Permissions</strong> : Elles définissent les actions autorisées sur les fichiers (Lecture, Écriture, Modification, Contrôle Total).</li>
+<li><strong>Groupes par défaut</strong> : Le système propose des groupes préconfigurés comme <em>Administrateurs</em> (contrôle total), <em>Utilisateurs</em> (droits limités) et <em>Invités</em>.</li>
+</ul>
+<h3>Partage de Ressources</h3>
+<p>Le partage réseau permet de rendre des dossiers accessibles à d'autres utilisateurs.</p>
+<ul>
+<li><strong>Avantages</strong> : Centralisation des données, gestion fine des droits d'accès (ACL).</li>
+<li><strong>Accès</strong> : Via le chemin UNC (<code>\AdresseIP\NomPartage</code>).</li>
+<li><strong>Sécurité</strong> : Il est crucial de restreindre l'accès aux seuls utilisateurs autorisés pour éviter les fuites de données.</li>
+</ul>
+<hr />
+<h2>4. Sécurité et Stratégies</h2>
+<h3>Stratégie de Sécurité Locale</h3>
+<p>Elle définit les règles de sécurité de la machine locale.</p>
+<ul>
+<li><em>Exemple d'application</em> : Imposer une longueur minimale pour les mots de passe, verrouiller le compte après 3 échecs de connexion, ou forcer le changement de mot de passe tous les 90 jours.</li>
+</ul>
+<h3>Stratégies de Groupe (GPO) Locales</h3>
+<p>Les GPO permettent de verrouiller l'environnement utilisateur pour limiter les erreurs ou les usages abusifs.</p>
+<ul>
+<li><em>Exemples</em> : Interdire l'accès au Panneau de configuration, empêcher le changement de fond d'écran, ou désactiver l'invite de commande.
+La <strong>Microsoft Management Console (MMC)</strong> est l'interface centrale permettant de manipuler ces stratégies.</li>
+</ul>
+<h3>Stratégie de Sauvegarde</h3>
+<p>La sécurité passe aussi par la pérennité des données. Une image système (snapshot) permet de capturer l'état exact de la machine (OS + Données) à un instant T. En cas de crash critique, la restauration de cette image permet de remettre le système en état de marche rapidement.</p>
+
+    </div>
+</body>
+</html>

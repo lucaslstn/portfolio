@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP2 Serveur WEB Sécurisé Debian pfSense</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP2 : Déploiement d'un Serveur Web Sécurisé (Debian 11 &amp; pfSense)</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC4</p>
+<hr />
+<h2>1. Architecture du Réseau</h2>
+<p>Le projet consiste à mettre en place une infrastructure complète comprenant un pare-feu, des serveurs DNS et un serveur Web.</p>
+<p><strong>Schéma de principe :</strong></p>
+<ul>
+<li><strong>LAN</strong> : Réseau interne (Administration).</li>
+<li><strong>DMZ</strong> : Zone Démilitarisée (Hébergement du serveur Web).</li>
+<li><strong>WAN</strong> : Accès vers l'extérieur.</li>
+</ul>
+<blockquote>
+<p><strong>Note importante :</strong> L'adresse IP du serveur DNS LAN est <strong>192.168.0.53</strong>.</p>
+</blockquote>
+<p><img src="..\..\TC4\TP2_extracted\images\image_p1_1.png" alt="Architecture Réseau" /></p>
+<hr />
+<h2>2. Configuration du Pare-feu pfSense</h2>
+<p>pfSense assure le routage et la sécurité entre nos trois zones (WAN, LAN, DMZ).</p>
+<h3>Installation et Interfaces</h3>
+<ol>
+<li>Création de la VM (FreeBSD 64-bit).</li>
+<li>Configuration de 3 cartes réseau : Pont (WAN), Interne (LAN), Interne (DMZ).</li>
+<li>Affectation des interfaces via la console pfSense.</li>
+</ol>
+<p><img src="..\..\TC4\TP2_extracted\images\image_p2_2.png" alt="Installation pfSense 1" />
+<img src="..\..\TC4\TP2_extracted\images\image_p2_3.png" alt="Installation pfSense 2" /></p>
+<h3>Administration Web</h3>
+<p>L'interface de gestion est accessible via <code>http://192.168.0.1</code> depuis un poste du LAN.</p>
+<ul>
+<li><strong>WAN</strong> : Récupère son IP via DHCP (accès ponté).</li>
+<li><strong>LAN</strong> : 192.168.0.1/24.</li>
+<li><strong>DMZ</strong> : À activer et configurer (ex: 192.168.10.1/24).</li>
+</ul>
+<p><img src="..\..\TC4\TP2_extracted\images\image_p5_9.png" alt="Config WAN" />
+<img src="..\..\TC4\TP2_extracted\images\image_p6_10.png" alt="Config DMZ" /></p>
+<hr />
+<h2>3. Services DNS (Windows Server 2022)</h2>
+<p>Nous gérons deux serveurs DNS pour assurer la résolution interne et externe.</p>
+<ol>
+<li><strong>Installation du rôle DNS</strong> sur Windows Server.</li>
+<li><strong>Configuration des redirecteurs</strong> : Le DNS LAN pointe vers le DNS FAI, qui lui-même pointe vers les DNS racines ou ceux du lycée.</li>
+<li><strong>Zones de recherche</strong> : Création d'une zone <code>148.sio</code> (basée sur l'octet affecté).</li>
+</ol>
+<p><img src="..\..\TC4\TP2_extracted\images\image_p7_12.png" alt="Rôle DNS" />
+<img src="..\..\TC4\TP2_extracted\images\image_p8_14.png" alt="Redirecteurs" /></p>
+<hr />
+<h2>4. Configuration du Serveur Web Debian 11</h2>
+<p>Le serveur Web est hébergé en DMZ sous Debian 11.</p>
+<h3>Préparation du Système</h3>
+<ul>
+<li>Configuration de l'IP statique dans <code>/etc/network/interfaces</code>.</li>
+<li>Mise à jour du fichier <code>sources.list</code> pour pointer vers les dépôts officiels Debian Bullseye.</li>
+<li>Exécution de <code>apt update &amp;&amp; apt upgrade</code>.</li>
+</ul>
+<p><img src="..\..\TC4\TP2_extracted\images\image_p10_18.png" alt="Config IP Debian" />
+<img src="..\..\TC4\TP2_extracted\images\image_p11_20.png" alt="Sources List" /></p>
+<h3>Installation des Services</h3>
+<ol>
+<li><strong>Apache2</strong> : <code>apt install apache2</code>.</li>
+<li><strong>MariaDB</strong> : Installation du moteur de base de données et sécurisation via <code>mysql_secure_installation</code>. Création d'un utilisateur <code>administrateur</code> avec les privilèges SQL.</li>
+</ol>
+<p><img src="..\..\TC4\TP2_extracted\images\image_p13_23.png" alt="MariaDB Setup" /></p>
+<h3>Virtual Hosts et Publication</h3>
+<p>Nous créons deux sites distincts.</p>
+<ol>
+<li>Création des répertoires dans <code>/var/www/html/site1</code>.</li>
+<li>Configuration des fichiers <code>.conf</code> dans <code>/etc/apache2/sites-available/</code>.</li>
+<li>Activation des sites avec <code>a2ensite</code> et redémarrage d'Apache.</li>
+</ol>
+<p><img src="..\..\TC4\TP2_extracted\images\image_p14_24.png" alt="Virtual Host Config" /></p>
+<hr />
+<h2>5. Tests et Accès Extérieur</h2>
+<h3>Test Local</h3>
+<p>L'accès à <code>http://site1.148.sio</code> depuis le LAN confirme que le DNS et Apache fonctionnent de concert.</p>
+<h3>Accès WAN (NAT/Port Forwarding)</h3>
+<p>Pour rendre le site accessible depuis l'extérieur, nous configurons une règle de NAT sur pfSense : rediriger le port 80 de l'interface WAN vers l'IP du serveur Debian en DMZ.</p>
+<p><img src="..\..\TC4\TP2_extracted\images\image_p16_28.png" alt="Configuration NAT pfSense" /></p>
+
+    </div>
+</body>
+</html>

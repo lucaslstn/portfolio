@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP8 Gestion Utilisateurs et Sécurité MSAP</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP8 : Administration des Utilisateurs et Sécurité de l'AD - Cas MSAP</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC3</p>
+<hr />
+<h2>1. Audit de l'Organisation Active Directory (AD)</h2>
+<p>L'étude de la structure actuelle de l'Active Directory de la MSAP révèle des erreurs de configuration dans la gestion des privilèges.</p>
+<h3>1.1 Analyse des Groupes et de l'Héritage</h3>
+<ul>
+<li><strong>Faille identifiée</strong> : Le groupe &quot;Partenaires&quot; est membre du groupe &quot;Administrateurs&quot;. Par héritage, tous les comptes membres (clic, enedis, msa, tresor) possèdent les droits de contrôle total sur le domaine. Un partenaire malintentionné pourrait donc compromettre l'intégralité du SI.</li>
+<li><strong>Solution</strong> : Sortir le groupe &quot;Partenaires&quot; du groupe &quot;Administrateurs&quot; et lui attribuer des droits spécifiques et restreints.</li>
+</ul>
+<h3>1.2 Sécurité du Serveur de Fichiers</h3>
+<ul>
+<li><strong>Problème</strong> : Le serveur de fichiers et le contrôleur de domaine sont sur la même machine. L'authentification est unique, et les dossiers de chaque partenaire sont visibles par tous.</li>
+<li><strong>Solution</strong> : Mettre en place des permissions NTFS strictes. Chaque partenaire ne doit voir et accéder qu'à son propre dossier.</li>
+</ul>
+<hr />
+<h2>2. Note de Service n°2</h2>
+<p><strong>De :</strong> Lucas Lestiennes
+<strong>À :</strong> M. Brillat
+<strong>Date :</strong> 06/12/2024
+<strong>Objet :</strong> Amélioration de la gestion des droits et du serveur de fichiers</p>
+<p>M. Brillat,</p>
+<p>Après analyse de l'infrastructure AD de la MSAP, j'ai constaté que la gestion actuelle des droits expose l'organisation à des risques de corruption et de fuite de données.</p>
+<p><strong>Points d'amélioration prioritaires :</strong></p>
+<ul>
+<li><strong>Réorganisation des groupes</strong> : Nous devons briser la filiation entre le groupe &quot;Partenaires&quot; et le groupe &quot;Administrateurs&quot;. Un utilisateur partenaire ne doit en aucun cas pouvoir modifier la configuration du serveur.</li>
+<li><strong>Gestion granulaire des droits</strong> :
+<ul>
+<li><strong>Droits de sécurité (NTFS)</strong> : Les utilisateurs ne doivent avoir que le droit de &quot;Lecture&quot; sur les dossiers partagés communs pour éviter toute suppression accidentelle ou malveillante.</li>
+<li><strong>Droits de partage</strong> : Le &quot;Contrôle total&quot; doit être réservé à l'administrateur système (M. Jivon). Pour les partenaires, un droit de &quot;Modification&quot; sur leurs dossiers respectifs est suffisant.</li>
+</ul>
+</li>
+</ul>
+<p>Ces modifications permettront de garantir la confidentialité des données de chaque partenaire et d'assurer la stabilité du système d'information de la MSAP.</p>
+<p>Restant à votre disposition pour la mise en œuvre de ces mesures.</p>
+<p>Cordialement,
+Lucas Lestiennes</p>
+
+    </div>
+</body>
+</html>

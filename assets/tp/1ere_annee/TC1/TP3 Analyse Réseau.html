@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP3 Analyse Réseau</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP3 : Analyse et Diagnostic Réseau</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC1</p>
+<hr />
+<h2>1. Analyse de l'Architecture Réseau</h2>
+<h3>Typologie</h3>
+<ul>
+<li><strong>Taille</strong> : Le réseau est constitué de deux réseaux locaux (LAN) interconnectés par des routeurs, formant une structure étendue (WAN).</li>
+<li><strong>Topologie</strong> : C'est une topologie en <strong>étoile</strong>, où les périphériques finaux sont connectés à un point central (switch ou concentrateur).</li>
+<li><strong>Type d'accès</strong> : Il s'agit d'un <strong>Intranet</strong>, un réseau privé réservé aux membres de l'organisation.</li>
+</ul>
+<h3>Inventaire Matériel</h3>
+<p>Le parc est hétérogène, composé de :</p>
+<ul>
+<li><strong>Équipements terminaux</strong> : 1 Serveur, 4 PC fixes, 1 Tablette, 1 terminal sans fil.</li>
+<li><strong>Équipements d'interconnexion</strong> : 2 Routeurs (pour le routage entre réseaux), 3 Commutateurs (Switchs), 1 Point d'accès Wi-Fi, 1 Hub.</li>
+</ul>
+<h3>Rôles Identifiés</h3>
+<ul>
+<li><strong>Serveur</strong> : <code>SERVEUR-DIDESC</code></li>
+<li><strong>Clients</strong> : <code>Tablet PC0</code>, <code>ATELIER-1</code>, <code>ATELIER-2</code>, <code>DIRECTION-1</code>, <code>DIRECTION-2</code></li>
+</ul>
+<hr />
+<h2>2. Tests de Connectivité</h2>
+<h3>2.1 Liaison Locale (LAN)</h3>
+<p><strong>Objectif :</strong> Vérifier la communication entre deux équipements du même réseau.
+<strong>Test :</strong> Ping depuis le PC <code>DIRECTION-1</code> vers la tablette <code>Tablet PC0</code>.
+<strong>Résultat :</strong> Succès. Les équipements communiquent correctement au sein du même sous-réseau via les commutateurs.</p>
+<h3>2.2 Liaison Distante (Routage)</h3>
+<p><strong>Objectif :</strong> Vérifier la communication entre deux équipements situés sur des réseaux différents.
+<strong>Test :</strong> Envoi d'un paquet (PDU) entre <code>ATELIER-1</code> et <code>SERVEUR-DIDESC</code>.
+<strong>Observation :</strong> Échec initial.
+<strong>Diagnostic :</strong> Les routeurs ne connaissaient pas la route vers le réseau de destination.
+<strong>Solution :</strong> Configuration du protocole de routage <strong>RIP</strong> (Routing Information Protocol) pour échanger les tables de routage. Après un délai de convergence (le temps que les routeurs &quot;cartographient&quot; le réseau), la communication est devenue fonctionnelle.</p>
+
+    </div>
+</body>
+</html>
