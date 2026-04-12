@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>infra-haproxy-keepalived</title>
+  <style>
+
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+svg {
+height: auto;
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+border: none;
+border-top: 1px solid #1a1a1a;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<style>
+/* Dark Mode */
+html, body {
+    background-color: #121212 !important;
+    color: #e0e0e0 !important;
+}
+a {
+    color: #64b5f6 !important;
+}
+a:visited {
+    color: #ba68c8 !important;
+}
+code {
+    background-color: #2d2d2d !important;
+    color: #f8c555 !important;
+}
+pre {
+    background-color: #1e1e1e !important;
+    border: 1px solid #333 !important;
+}
+/* Remove underline from TOC */
+#TOC a {
+    text-decoration: none !important;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">infra-haproxy-keepalived</h1>
+</header>
+<h1 id="infrastructure-load-balancing-haute-disponibilité-haproxy-keepalived">Infrastructure
+Load-Balancing &amp; Haute Disponibilité — HAProxy + Keepalived</h1>
+<p><strong>OS :</strong> Debian 13</p>
+<hr />
+<h2 id="table-des-matières">Table des matières</h2>
+<ol type="1">
+<li><a href="#architecture-globale">Architecture Globale</a></li>
+<li><a href="#prérequis-système">Prérequis Système</a></li>
+<li><a href="#configuration-keepalived">Configuration
+Keepalived</a></li>
+<li><a href="#configuration-haproxy">Configuration HAProxy</a></li>
+<li><a href="#gestion-ssl-certificats-auto-signés-local">Gestion SSL avec
+Certbot</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+</ol>
+<hr />
+<h2 id="architecture-globale">1. Architecture Globale</h2>
+<pre class="text"><code>                          ┌──────────────────────────────────┐
+           Internet ──▶   │   VIP : 10.0.0.82 (Keepalived)   │
+                          └──────────────┬───────────────────┘
+                                         │ VRRP failover automatique
+          ┌──────────────────────────────┴──────────────────────────────┐
+          │                                                              │
+┌─────────▼─────────────────────┐              ┌───────────────────────▼──────────────────┐
+│  HAProxy Node 1 (MASTER)      │              │  HAProxy Node 2 (BACKUP)                 │
+│  10.0.0.80                    │◀── VRRP ────▶│  10.0.0.81                               │
+│  · Routing HTTP/HTTPS         │              │  · Routing HTTP/HTTPS                    │
+│  · Passerelle Internet        │              │  · Passerelle Internet                   │
+│    des backends (NAT)         │              │    des backends (NAT)                    │
+└─────────┬─────────────────────┘              └──────────────────────────────────────────┘
+          │
+          │  ← trafic Internet entrant (routing ACL par domaine / path)
+          │  → trafic sortant des backends vers Internet (NAT)
+          │
+ ┌────────┴────────┐
+ │                 │
+ ▼                 ▼
+┌──────────────┐  ┌──────────────┐
+│  Backend 1   │  │  Backend 2   │
+│  10.1.0.80   │  │  10.1.0.81   │
+│              │  │              │
+│  ✗ pas       │  │  ✗ pas       │
+│  d&#39;accès    │  │  d&#39;accès    │
+│  Internet    │  │  Internet    │
+│  direct      │  │  direct      │
+└──────────────┘  └──────────────┘</code></pre>
+<p><strong>Principe de fonctionnement :</strong></p>
+<ul>
+<li><strong>Keepalived</strong> gère une IP Virtuelle (VIP
+<code>10.0.0.82</code>) entre les deux nœuds via le protocole VRRP. Le
+nœud MASTER détient la VIP. Si le MASTER disparaît (crash, réseau), le
+BACKUP prend la VIP en moins de 2 secondes.</li>
+<li><strong>HAProxy</strong> tourne sur les deux nœuds et reçoit le
+trafic entrant via la VIP. Il inspecte les requêtes HTTP/HTTPS et les
+route vers les backends via des ACLs (par nom de domaine ou par
+path).</li>
+<li><strong>Passerelle Internet des backends :</strong> les serveurs
+backends (<code>10.1.0.80</code>, <code>10.1.0.81</code>) n’ont
+<strong>aucune interface exposée directement sur Internet</strong>. Tout
+leur trafic sortant (mises à jour système, appels API externes, etc.)
+transite obligatoirement par le nœud HAProxy actif qui assure le NAT.
+Cela réduit la surface d’attaque : un attaquant ne peut pas joindre un
+backend directement depuis l’extérieur.</li>
+<li>HAProxy surveille la santé des backends en continu via des
+health-checks HTTP.</li>
+</ul>
+<hr />
+<h2 id="prérequis-système">2. Prérequis Système</h2>
+<h3 id="paquets-à-installer">2.1 Paquets à installer</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> update <span class="kw">&amp;&amp;</span> <span class="ex">apt</span> install <span class="at">-y</span> <span class="dt">\</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    haproxy <span class="dt">\ </span>        <span class="co"># Load balancer</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="ex">keepalived</span> <span class="dt">\ </span>     <span class="co"># Gestion de la VIP VRRP</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="ex">certbot</span>           <span class="co"># Génération des certificats SSL Let&#39;s Encrypt</span></span></code></pre></div>
+<h3 id="paramètres-kernel">2.2 Paramètres Kernel</h3>
+<p>HAProxy doit pouvoir se bind sur la VIP (<code>10.0.0.82</code>),
+même si celle-ci n’est pas encore assignée localement (cas du nœud
+BACKUP). Sans ce paramètre, HAProxy ne démarre pas sur le BACKUP.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Activation à chaud (non persistant, pour test)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="ex">sysctl</span> <span class="at">-w</span> net.ipv4.ip_nonlocal_bind=1</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Activation persistante (survit aux reboots)</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;net.ipv4.ip_nonlocal_bind = 1&quot;</span> <span class="op">&gt;&gt;</span> /etc/sysctl.d/99-haproxy.conf</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ex">sysctl</span> <span class="at">-p</span> /etc/sysctl.d/99-haproxy.conf</span></code></pre></div>
+<p>Vérification :</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">sysctl</span> net.ipv4.ip_nonlocal_bind</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Attendu : net.ipv4.ip_nonlocal_bind = 1</span></span></code></pre></div>
+<h3 id="pare-feu-si-actif">2.3 Pare-feu (si actif)</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Autoriser le protocole VRRP entre les deux nœuds (multicast 224.0.0.18)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> INPUT  <span class="at">-p</span> vrrp <span class="at">-j</span> ACCEPT</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> OUTPUT <span class="at">-p</span> vrrp <span class="at">-j</span> ACCEPT</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Autoriser le trafic HTTP/HTTPS entrant sur la VIP</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> INPUT <span class="at">-p</span> tcp <span class="at">--dport</span> 80  <span class="at">-j</span> ACCEPT</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> INPUT <span class="at">-p</span> tcp <span class="at">--dport</span> 443 <span class="at">-j</span> ACCEPT</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Autoriser l&#39;interface de stats HAProxy (port 8404, accès restreint)</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="ex">iptables</span> <span class="at">-A</span> INPUT <span class="at">-p</span> tcp <span class="at">--dport</span> 8404 <span class="at">-s</span> 10.0.0.0/24 <span class="at">-j</span> ACCEPT</span></code></pre></div>
+<hr />
+<h2 id="configuration-keepalived">3. Configuration Keepalived</h2>
+<p>Le fichier de configuration est identique sur les deux nœuds à
+l’exception de <code>state</code> et <code>priority</code>.</p>
+<h3 id="haproxy-node-1-master-10.0.0.80">3.1 HAProxy Node 1 — MASTER
+(<code>10.0.0.80</code>)</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># /etc/keepalived/keepalived.conf — HAProxy Node 1 (MASTER)</span></span></code></pre></div>
+<pre class="text"><code># Script de health-check : Keepalived vérifie que HAProxy est vivant.
+# Si HAProxy crashe sur le MASTER, la VIP bascule sur le BACKUP.
+vrrp_script chk_haproxy {
+    script &quot;/usr/bin/killall -0 haproxy&quot;  # Retourne 0 si le process existe
+    interval 2                             # Vérification toutes les 2 secondes
+    weight   -20                           # Réduit la priorité de 20 si le check échoue
+}
+
+vrrp_instance VI_1 {
+    state  MASTER                 # Ce nœud est le MASTER au démarrage
+    interface eth0                # Interface réseau qui porte la VIP (adapter si nécessaire : ens3, bond0...)
+    virtual_router_id 51          # Identifiant VRRP unique pour ce groupe (doit être identique sur les deux nœuds)
+    priority  101                 # Priorité plus haute que le BACKUP (100) → gagne l&#39;élection au démarrage
+    advert_int 1                  # Envoi d&#39;un heartbeat VRRP toutes les 1 seconde
+
+    authentication {
+        auth_type PASS
+        auth_pass S3cur3VRRPp4ss   # Mot de passe VRRP partagé (CHANGER EN PROD)
+    }
+
+    virtual_ipaddress {
+        10.0.0.82/24              # La VIP que ce groupe gère
+    }
+
+    track_script {
+        chk_haproxy               # Lie le résultat du health-check à la priorité de ce nœud
+    }
+}</code></pre>
+<h3 id="haproxy-node-2-backup-10.0.0.81">3.2 HAProxy Node 2 — BACKUP
+(<code>10.0.0.81</code>)</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># /etc/keepalived/keepalived.conf — HAProxy Node 2 (BACKUP)</span></span></code></pre></div>
+<pre class="text"><code>vrrp_script chk_haproxy {
+    script &quot;/usr/bin/killall -0 haproxy&quot;
+    interval 2
+    weight   -20
+}
+
+vrrp_instance VI_1 {
+    state  BACKUP                 # Ce nœud démarre en mode BACKUP
+    interface eth0
+    virtual_router_id 51          # Doit être identique au MASTER
+    priority  100                 # Priorité inférieure au MASTER (101)
+    advert_int 1
+
+    authentication {
+        auth_type PASS
+        auth_pass S3cur3VRRPp4ss  # Doit être identique au MASTER
+    }
+
+    virtual_ipaddress {
+        10.0.0.82/24
+    }
+
+    track_script {
+        chk_haproxy
+    }
+}</code></pre>
+<h3 id="activation">3.3 Activation</h3>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> enable <span class="at">--now</span> keepalived</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérifier que la VIP est bien assignée sur le MASTER</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ex">ip</span> addr show eth0 <span class="kw">|</span> <span class="fu">grep</span> 10.0.0.82</span></code></pre></div>
+<hr />
+<h2 id="configuration-haproxy">4. Configuration HAProxy</h2>
+<h3 id="structure-du-fichier">4.1 Structure du fichier</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># /etc/haproxy/haproxy.cfg</span></span></code></pre></div>
+<h3 id="section-global">4.2 Section <code>global</code></h3>
+<pre class="haproxy"><code>global
+    log /dev/log local0               # Envoi des logs vers syslog
+    log /dev/log local1 notice
+    chroot      /var/lib/haproxy      # Jail filesystem pour réduire la surface d&#39;attaque
+    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+    stats timeout 30s
+
+    user  haproxy                     # Déescalade de privilèges après bind
+    group haproxy
+
+    daemon                            # Lance HAProxy en background
+
+    # --- Hardening SSL/TLS ---
+    ssl-default-bind-ciphers   ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS
+    ssl-default-bind-options   no-sslv3 no-tlsv10 no-tlsv11   # Désactive les protocoles obsolètes
+    ssl-default-server-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS
+    ssl-default-server-options no-sslv3 no-tlsv10 no-tlsv11
+
+    tune.ssl.default-dh-param 2048    # Taille minimale des paramètres DH pour le forward secrecy</code></pre>
+<h3 id="section-defaults">4.3 Section <code>defaults</code></h3>
+<pre class="haproxy"><code>defaults
+    log     global
+    mode    http                      # Mode HTTP (inspection L7, nécessaire pour les ACLs)
+    option  httplog                   # Log des requêtes HTTP (méthode, URL, code réponse)
+    option  dontlognull               # Ignore les health-checks qui ne génèrent pas de requête HTTP
+
+    timeout connect  5s               # Délai max pour établir la connexion vers un backend
+    timeout client   50s              # Délai max d&#39;inactivité côté client
+    timeout server   50s              # Délai max d&#39;inactivité côté serveur
+
+    errorfile 400 /etc/haproxy/errors/400.http
+    errorfile 403 /etc/haproxy/errors/403.http
+    errorfile 500 /etc/haproxy/errors/500.http
+    errorfile 502 /etc/haproxy/errors/502.http
+    errorfile 503 /etc/haproxy/errors/503.http</code></pre>
+<h3 id="interface-de-statistiques">4.4 Interface de Statistiques</h3>
+<pre class="haproxy"><code># --- Page de statistiques HAProxy ---
+# Accessible sur http://10.0.0.82:8404/stats
+# RESTREINDRE l&#39;accès en production (ACL réseau ou authentification)
+frontend stats
+    bind *:8404
+    stats enable                          # Active l&#39;interface web de stats
+    stats uri /stats                      # URL d&#39;accès à la page de stats
+    stats realm &quot;HAProxy Statistics&quot;      # Titre de la boîte d&#39;authentification HTTP Basic
+    stats auth admin:ChangeM3!            # Authentification HTTP Basic (CHANGER EN PROD)
+    stats refresh 10s                     # Rafraîchissement automatique toutes les 10 secondes
+    stats show-legends                    # Affiche la légende des colonnes
+    stats show-node                       # Affiche le nom du nœud HAProxy actif
+    no log                                # Ne pas polluer les logs avec les hits sur /stats</code></pre>
+<h3 id="frontend-http-redirection-https">4.5 Frontend HTTP → Redirection
+HTTPS</h3>
+<pre class="haproxy"><code># --- Frontend HTTP (port 80) ---
+# Seul rôle : rediriger tout le trafic en HTTPS.
+# Aucun routing applicatif ici, on ne touche pas au contenu.
+frontend http_redirect
+    bind 10.0.0.82:80                     # Écoute uniquement sur la VIP
+
+    # Redirection permanente (301) vers HTTPS
+    # Préserve le host et l&#39;URI d&#39;origine
+    http-request redirect scheme https code 301</code></pre>
+<h3 id="frontend-https-routing-par-acl">4.6 Frontend HTTPS — Routing par
+ACL</h3>
+<pre class="haproxy"><code># --- Frontend HTTPS (port 443) ---
+# Point d&#39;entrée principal. Termine le TLS et route vers les backends via ACLs.
+frontend https_frontend
+    bind 10.0.0.82:443 ssl crt /etc/haproxy/certs/  # Dossier contenant les fichiers .pem (un par domaine)
+    
+    # Ajoute l&#39;en-tête HSTS : force le navigateur à utiliser HTTPS pendant 1 an
+    http-response set-header Strict-Transport-Security &quot;max-age=31536000; includeSubDomains; preload&quot;
+
+    # Supprime les en-têtes qui divulguent des infos sur la stack serveur
+    http-response del-header X-Powered-By
+    http-response del-header Server
+
+    # --- Définition des ACLs ---
+
+    # ACLs par nom de domaine (SNI / Host header)
+    acl host_site1  hdr(host) -i site1.148.sio
+    acl host_site2  hdr(host) -i site2.148.sio
+
+    # ACLs par path (URL) — utile si plusieurs apps partagent le même domaine
+    acl path_site1  path_beg /site1
+    acl path_site2  path_beg /site2
+
+    # --- Règles de routing ---
+    # Priorité : domaine d&#39;abord, puis path en fallback
+
+    # Routing par domaine (recommandé, plus propre)
+    use_backend backend_site1  if host_site1
+    use_backend backend_site2  if host_site2
+
+    # Routing par path (activer si les deux sites partagent un domaine commun)
+    # use_backend backend_site1  if path_site1
+    # use_backend backend_site2  if path_site2
+
+    # Backend par défaut si aucune ACL ne matche
+    default_backend backend_site1</code></pre>
+<h3 id="backends">4.7 Backends</h3>
+<pre class="haproxy"><code># --- Backend site1.148.sio ---
+backend backend_site1
+    balance roundrobin                          # Distribution en round-robin entre les serveurs
+
+    # Health-check HTTP : HAProxy envoie une requête GET /health toutes les 5s.
+    # Un serveur est marqué DOWN après 3 échecs, UP après 2 succès consécutifs.
+    option httpchk GET /health
+    http-check expect status 200
+
+    # Réécriture du path : supprime le préfixe /site1 avant de transmettre au backend.
+    # Sans cette ligne, le backend recevrait /site1/ma-page au lieu de /ma-page.
+    http-request replace-path ^/site1(/.*)? \1
+
+    # Ajout de l&#39;IP réelle du client dans l&#39;en-tête X-Forwarded-For
+    option forwardfor
+
+    server backend1 10.1.0.80:80 check inter 5s fall 3 rise 2  # inter : intervalle du health-check
+    server backend2 10.1.0.81:80 check inter 5s fall 3 rise 2  # fall/rise : seuils DOWN/UP
+
+# --- Backend site2.148.sio ---
+backend backend_site2
+    balance roundrobin
+
+    option httpchk GET /health
+    http-check expect status 200
+
+    # Même logique de réécriture pour /site2
+    http-request replace-path ^/site2(/.*)? \1
+
+    option forwardfor
+
+    server backend1 10.1.0.80:8080 check inter 5s fall 3 rise 2  # Site2 tourne sur le port 8080
+    server backend2 10.1.0.81:8080 check inter 5s fall 3 rise 2</code></pre>
+<hr />
+<h2 id="gestion-ssl-certificats-auto-signés-local">5. Gestion SSL —
+Certificats Auto-Signés (Local)</h2>
+<h3 id="comprendre-le-problème-pourquoi-haproxy-est-différent">Comprendre le
+problème : pourquoi HAProxy est différent</h3>
+<p>Un certificat SSL est composé de <strong>deux fichiers
+distincts</strong> :</p>
+<table>
+<thead>
+<tr>
+<th>Fichier</th>
+<th>Contenu</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cert.pem</code></td>
+<td>Le certificat (clé publique + infos du domaine)</td>
+</tr>
+<tr>
+<td><code>key.pem</code></td>
+<td>La clé privée associée</td>
+</tr>
+</tbody>
+</table>
+<p>HAProxy <strong>n’accepte pas deux fichiers séparés</strong>. Il
+exige un seul fichier <code>.pem</code> qui contient les deux, dans cet
+ordre : certificat d’abord, clé privée ensuite.</p>
+<blockquote>
+<p><strong>Certificat auto-signé vs certificat Let’s Encrypt :</strong>
+un certificat auto-signé est généré localement, sans passer par une
+autorité de certification externe. Il fonctionne parfaitement pour un
+réseau interne ou un environnement de lab (comme ici), mais le
+navigateur affichera un avertissement de sécurité car il ne reconnaît
+pas l’émetteur. C’est un comportement normal — il suffit d’accepter
+l’exception dans le navigateur.</p>
+</blockquote>
+<hr />
+<h3 id="étape-1-installer-openssl">Étape 1 — Installer openssl</h3>
+<div class="sourceCode" id="cb18"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">apt</span> install <span class="at">-y</span> openssl</span></code></pre></div>
+<hr />
+<h3 id="étape-2-créer-le-dossier-de-certificats-haproxy">Étape 2 — Créer
+le dossier de certificats HAProxy</h3>
+<div class="sourceCode" id="cb19"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Créer le dossier qui contiendra les certificats</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> /etc/haproxy/certs</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Restreindre l&#39;accès : ce dossier contient des clés privées</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 700 /etc/haproxy/certs</span></code></pre></div>
+<hr />
+<h3 id="étape-3-générer-le-certificat-auto-signé-pour-chaque-domaine">Étape
+3 — Générer le certificat auto-signé pour chaque domaine</h3>
+<p>La commande <code>openssl req -x509</code> génère en une seule fois
+la clé privée ET le certificat auto-signé.</p>
+<p><strong>Pour site1.148.sio :</strong></p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> req <span class="at">-x509</span> <span class="at">-newkey</span> rsa:2048 <span class="at">-nodes</span> <span class="at">-days</span> 3650     <span class="at">-keyout</span> /etc/haproxy/certs/site1.key.pem     <span class="at">-out</span>    /etc/haproxy/certs/site1.cert.pem     <span class="at">-subj</span>   <span class="st">&quot;/C=FR/ST=Occitanie/L=Toulouse/O=BTS-SIO/CN=site1.148.sio&quot;</span></span></code></pre></div>
+<p><strong>Pour site2.148.sio :</strong></p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> req <span class="at">-x509</span> <span class="at">-newkey</span> rsa:2048 <span class="at">-nodes</span> <span class="at">-days</span> 3650     <span class="at">-keyout</span> /etc/haproxy/certs/site2.key.pem     <span class="at">-out</span>    /etc/haproxy/certs/site2.cert.pem     <span class="at">-subj</span>   <span class="st">&quot;/C=FR/ST=Occitanie/L=Toulouse/O=BTS-SIO/CN=site2.148.sio&quot;</span></span></code></pre></div>
+<p>Explication des options :</p>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Option</th>
+<th>Rôle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-x509</code></td>
+<td>Génère un certificat auto-signé (pas une demande de signature
+CSR)</td>
+</tr>
+<tr>
+<td><code>-newkey rsa:2048</code></td>
+<td>Crée une nouvelle clé privée RSA de 2048 bits en même temps</td>
+</tr>
+<tr>
+<td><code>-nodes</code></td>
+<td>Ne chiffre pas la clé privée (pas de mot de passe → HAProxy peut la
+lire sans intervention humaine)</td>
+</tr>
+<tr>
+<td><code>-days 3650</code></td>
+<td>Le certificat est valide 10 ans</td>
+</tr>
+<tr>
+<td><code>-subj</code></td>
+<td>Renseigne les informations du certificat sans passer par un
+formulaire interactif</td>
+</tr>
+<tr>
+<td><code>CN=</code></td>
+<td><strong>Common Name</strong> : doit correspondre exactement au nom
+de domaine utilisé dans le navigateur</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="étape-4-fusionner-en-un-seul-fichier-.pem-pour-haproxy">Étape 4
+— Fusionner en un seul fichier .pem pour HAProxy</h3>
+<p>La commande <code>cat</code> colle les deux fichiers bout à
+bout.<br />
+<strong>L’ordre est impératif</strong> : certificat TOUJOURS en premier,
+clé privée en second.</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fusion pour site1.148.sio</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> /etc/haproxy/certs/site1.cert.pem     /etc/haproxy/certs/site1.key.pem     <span class="op">&gt;</span> /etc/haproxy/certs/site1.148.sio.pem</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Fusion pour site2.148.sio</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span> /etc/haproxy/certs/site2.cert.pem     /etc/haproxy/certs/site2.key.pem     <span class="op">&gt;</span> /etc/haproxy/certs/site2.148.sio.pem</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Sécuriser les fichiers finaux (clé privée dedans)</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 600 /etc/haproxy/certs/site1.148.sio.pem</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="fu">chmod</span> 600 /etc/haproxy/certs/site2.148.sio.pem</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Les fichiers intermédiaires séparés ne sont plus utiles</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> /etc/haproxy/certs/site1.cert.pem /etc/haproxy/certs/site1.key.pem</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a><span class="fu">rm</span> /etc/haproxy/certs/site2.cert.pem /etc/haproxy/certs/site2.key.pem</span></code></pre></div>
+<p>Vérifier que les fichiers finaux sont bien présents :</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-lh</span> /etc/haproxy/certs/</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Attendu :</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># -rw------- 1 root root  XXXX site1.148.sio.pem</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="co"># -rw------- 1 root root  XXXX site2.148.sio.pem</span></span></code></pre></div>
+<hr />
+<h3 id="étape-5-démarrer-haproxy">Étape 5 — Démarrer HAProxy</h3>
+<div class="sourceCode" id="cb24"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérifier la syntaxe avant de démarrer</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="ex">haproxy</span> <span class="at">-c</span> <span class="at">-f</span> /etc/haproxy/haproxy.cfg</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Démarrer HAProxy</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> start haproxy</span></code></pre></div>
+<hr />
+<h3 id="vérifications-utiles">Vérifications utiles</h3>
+<p>Afficher les informations d’un certificat (domaine, dates de
+validité) :</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> x509 <span class="at">-in</span> /etc/haproxy/certs/site1.148.sio.pem <span class="at">-noout</span> <span class="at">-text</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="st">&quot;(Subject:|Not Before|Not After)&quot;</span></span></code></pre></div>
+<p>Tester que HAProxy répond bien en HTTPS sur la VIP :</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Depuis un poste du réseau interne</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># -k ignore l&#39;avertissement du certificat auto-signé</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-k</span> https://site1.148.sio</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-k</span> https://site2.148.sio</span></code></pre></div>
+<p>Vérifier le certificat présenté par HAProxy :</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="ex">openssl</span> s_client <span class="at">-connect</span> 10.0.0.82:443 <span class="at">-servername</span> site1.148.sio <span class="op">&lt;</span> /dev/null <span class="dv">2</span><span class="op">&gt;</span>/dev/null <span class="kw">|</span> <span class="ex">openssl</span> x509 <span class="at">-noout</span> <span class="at">-subject</span> <span class="at">-dates</span></span></code></pre></div>
+<hr />
+<h2 id="troubleshooting">6. Troubleshooting</h2>
+<h3 id="vérification-de-la-syntaxe-haproxy">6.1 Vérification de la
+syntaxe HAProxy</h3>
+<p>À exécuter <strong>avant chaque reload</strong> ou après toute
+modification de <code>haproxy.cfg</code>. Retourne les erreurs de
+configuration sans redémarrer le service.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">haproxy</span> <span class="at">-c</span> <span class="at">-f</span> /etc/haproxy/haproxy.cfg</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Attendu : &quot;Configuration file is valid&quot;</span></span></code></pre></div>
+<h3 id="reload-restart-sans-interruption">6.2 Reload / Restart sans
+interruption</h3>
+<div class="sourceCode" id="cb29"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Reload gracieux : les connexions actives ne sont pas coupées (préférer cette commande)</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> reload haproxy</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Restart complet : coupe toutes les connexions actives (utiliser uniquement si reload impossible)</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> restart haproxy</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérifier l&#39;état du service</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> status haproxy</span></code></pre></div>
+<h3 id="logs-en-temps-réel">6.3 Logs en temps réel</h3>
+<div class="sourceCode" id="cb30"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Suivre les logs HAProxy en live (requêtes, erreurs de connexion, health-checks)</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-u</span> haproxy <span class="at">-f</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Filtrer uniquement les erreurs (codes HTTP 5xx ou messages d&#39;erreur HAProxy)</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-u</span> haproxy <span class="at">-f</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-E</span> <span class="st">&quot;(ERR|5[0-9]{2}|BACKEND|DOWN)&quot;</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Logs Keepalived (bascules VRRP, changements d&#39;état MASTER/BACKUP)</span></span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a><span class="ex">journalctl</span> <span class="at">-u</span> keepalived <span class="at">-f</span></span></code></pre></div>
+<h3 id="vérification-de-la-vip-et-de-létat-vrrp">6.4 Vérification de la
+VIP et de l’état VRRP</h3>
+<div class="sourceCode" id="cb31"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Vérifier que la VIP est assignée sur le nœud actif (doit apparaître sur le MASTER uniquement)</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="ex">ip</span> addr show eth0 <span class="kw">|</span> <span class="fu">grep</span> 10.0.0.82</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Voir les détails de l&#39;instance VRRP (état, priorité, uptime)</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a><span class="ex">systemctl</span> status keepalived</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Depuis un poste externe : vérifier quel nœud détient physiquement la VIP</span></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a><span class="ex">arping</span> <span class="at">-I</span> eth0 10.0.0.82</span></code></pre></div>
+<h3 id="statistiques-et-état-des-backends-via-socket-unix">6.5
+Statistiques et état des backends via socket Unix</h3>
+<div class="sourceCode" id="cb32"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Lister tous les backends et leur état (UP/DOWN) via le socket admin</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;show servers state&quot;</span> <span class="kw">|</span> <span class="ex">socat</span> stdio /run/haproxy/admin.sock</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Désactiver manuellement un backend pour maintenance</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;disable server backend_site1/backend1&quot;</span> <span class="kw">|</span> <span class="ex">socat</span> stdio /run/haproxy/admin.sock</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Réactiver le backend après maintenance</span></span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="st">&quot;enable server backend_site1/backend1&quot;</span> <span class="kw">|</span> <span class="ex">socat</span> stdio /run/haproxy/admin.sock</span></code></pre></div>
+<hr />
+<p><em>Interface web de stats disponible sur
+<code>http://10.0.0.82:8404/stats</code> (accès réseau interne
+uniquement).</em></p>
+</body>
+</html>
