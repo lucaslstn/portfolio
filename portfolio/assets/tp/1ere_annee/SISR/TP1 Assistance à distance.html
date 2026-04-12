@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP1 Assistance à distance</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP1 : Assistance à Distance</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes<br />
+<strong>Module :</strong> SISR</p>
+<hr />
+<h2>Introduction aux avantages de l'assistance à distance</h2>
+<p>L'utilisation d'outils de prise en main à distance présente plusieurs atouts majeurs pour la gestion de parc informatique :</p>
+<ul>
+<li>
+<p><strong>Accessibilité permanente :</strong>
+Ces solutions permettent d'accéder à un poste de travail à tout moment et depuis n'importe quel endroit, sous réserve de disposer d'une connexion internet et des outils adéquats. Les seules limites sont la dépendance au réseau et l'état physique de la machine (une panne matérielle empêchant tout accès).</p>
+</li>
+<li>
+<p><strong>Optimisation du temps :</strong>
+Pour un technicien, l'intervention à distance élimine les temps de trajet. Au lieu de se rendre physiquement chez le client ou sur le site concerné, il peut résoudre le problème directement depuis son bureau. C'est un gain d'efficacité considérable.</p>
+</li>
+<li>
+<p><strong>Économies financières :</strong>
+De ce fait, les coûts d'intervention sont réduits, car les frais de déplacement ne sont plus facturés au client ou à l'entreprise.</p>
+</li>
+</ul>
+<hr />
+<h2>Solution 1 : Virtual Network Computing (VNC)</h2>
+<p><strong>UltraVNC</strong> est une solution open-source populaire. Son fonctionnement repose sur une architecture client/serveur :</p>
+<ul>
+<li><strong>VNC Server</strong> : installé sur le poste à contrôler (celui qui a besoin d'assistance).</li>
+<li><strong>VNC Viewer</strong> : installé sur le poste du technicien (celui qui prend le contrôle).</li>
+</ul>
+<p>L'installation nécessite de définir deux mots de passe : un pour le contrôle total et un autre pour le mode &quot;vue seule&quot; (view-only).</p>
+<h3>Configuration du Serveur VNC</h3>
+<p>VNC Server offre de nombreuses options pour affiner la sécurité et le comportement de la connexion :</p>
+<p><img src="..\..\SISR\TP1_extracted\images\image_p1_1.png" alt="Configuration VNC" /></p>
+<h4>Gestion de la déconnexion (When Last Client Disconnects)</h4>
+<p>Trois comportements sont possibles lorsque le technicien se déconnecte :</p>
+<ul>
+<li><em>Do Nothing</em> : La session reste active.</li>
+<li><em>Lock Workstation</em> : La session est verrouillée.</li>
+<li><em>Logoff Workstation</em> : La session est fermée.</li>
+</ul>
+<h4>Clavier et Souris (Keyboard &amp; Mouse)</h4>
+<p>Permet de restreindre les actions du technicien :</p>
+<ul>
+<li><em>Disable Viewers inputs</em> : Le technicien ne peut que voir l'écran, sans interagir.</li>
+<li><em>Disable Local inputs</em> : Bloque la souris et le clavier de l'utilisateur distant pendant l'intervention.</li>
+</ul>
+<h4>Connexions Entrantes (Incoming connection)</h4>
+<p>Gère l'autorisation des connexions :</p>
+<ul>
+<li><em>Display Query Windows</em> : Demande une confirmation à l'utilisateur avant d'autoriser la prise en main.</li>
+<li><em>Sharing indicator</em> : Affiche un cadre coloré pour signaler que l'écran est partagé.</li>
+</ul>
+<h4>Connexions Multiples (Multi Viewer Connections)</h4>
+<p>Gère le comportement si plusieurs techniciens tentent de se connecter :</p>
+<ul>
+<li><em>Disconnecting all existing connections</em> : La nouvelle connexion éjecte les précédentes.</li>
+<li><em>Keep existing connections</em> : Permet le travail collaboratif.</li>
+<li><em>Refuse new connections</em> : Bloque toute nouvelle tentative si une session est déjà en cours.</li>
+</ul>
+<h4>Divers (Misc.)</h4>
+<ul>
+<li><em>Remove wallpaper</em> : Supprime le fond d'écran pour accélérer l'affichage.</li>
+<li><em>Enable Blank Monitor</em> : Écran noir sur le poste distant pour la confidentialité.</li>
+<li><em>RDPmode</em> : Permet de se connecter à une session RDP existante plutôt qu'à la session console.</li>
+</ul>
+<hr />
+<h2>Solution 2 : TeamViewer</h2>
+<p>TeamViewer est une solution propriétaire très répandue, fonctionnant sur un système d'identification par ID unique. Elle est souvent jugée plus conviviale qu'UltraVNC.</p>
+<h3>Fonctionnement</h3>
+<p>Contrairement aux IP, TeamViewer attribue un ID fixe à la machine. L'utilisateur communique cet ID et le mot de passe temporaire au technicien.</p>
+<p><img src="..\..\SISR\TP1_extracted\images\image_p3_2.png" alt="Interface TeamViewer" /></p>
+<p>L'outil permet deux modes principaux :</p>
+<ol>
+<li><strong>Contrôle à distance</strong> : Prise en main complète.</li>
+<li><strong>Transfert de fichiers</strong> : Échange de données uniquement.</li>
+</ol>
+<p><img src="..\..\SISR\TP1_extracted\images\image_p3_3.png" alt="Connexion TeamViewer" /></p>
+<p><img src="..\..\SISR\TP1_extracted\images\image_p3_4.png" alt="Session TeamViewer" /></p>
+<p>Une fois connecté, une barre d'outils en haut de l'écran permet d'accéder à des fonctionnalités avancées comme le transfert de fichiers, l'envoi de commandes système (Ctrl+Alt+Suppr) ou le chat. L'utilisateur distant est notifié de la prise en main et peut y mettre fin à tout moment.</p>
+<hr />
+<h2>Solution 3 : Bureau à Distance Windows (RDP)</h2>
+<p>Le protocole RDP (Remote Desktop Protocol) est natif aux environnements Microsoft. Il est disponible sur Windows, mais aussi via des clients sur Android, iOS et macOS.</p>
+<h3>Mise en place</h3>
+<ol>
+<li>
+<p>Activer l'option &quot;Bureau à distance&quot; dans les paramètres système du poste cible.</p>
+</li>
+<li>
+<p>Sur le poste client, lancer l'application &quot;Connexion Bureau à distance&quot;.</p>
+</li>
+<li>
+<p>Entrer le nom de la machine ou son adresse IP.</p>
+</li>
+<li>
+<p>S'authentifier avec les identifiants d'un compte utilisateur autorisé sur la machine distante.</p>
+</li>
+</ol>
+<p><img src="..\..\SISR\TP1_extracted\images\image_p5_8.png" alt="Authentification RDP" /></p>
+<p><strong>Particularité du RDP :</strong> Contrairement à VNC ou TeamViewer qui partagent l'écran de la session console, le RDP ouvre une <em>nouvelle</em> session (ou capture la session existante en déconnectant l'utilisateur local). L'utilisateur devant l'écran physique ne voit pas ce que fait le technicien ; il est déconnecté. C'est idéal pour l'administration de serveurs.</p>
+<hr />
+<h2>Solution 4 : SSH (Secure Shell)</h2>
+<p>SSH est le standard pour l'administration sécurisée en ligne de commande, particulièrement sur les systèmes Linux (comme Debian 11 utilisé ici).</p>
+<h3>Outils</h3>
+<ul>
+<li><strong>OpenSSH Server</strong> : Le service à installer sur la machine Debian (<code>apt install openssh-server</code>).</li>
+<li><strong>PuTTY</strong> : Un client SSH populaire pour Windows.</li>
+</ul>
+<p><img src="..\..\SISR\TP1_extracted\images\image_p6_9.png" alt="Configuration SSH" /></p>
+<h3>Configuration sur Debian</h3>
+<p>Après installation, il faut configurer le fichier <code>/etc/ssh/sshd_config</code> pour sécuriser l'accès, par exemple en limitant les utilisateurs autorisés avec <code>AllowUsers user1</code>.
+Un redémarrage du service est nécessaire : <code>service sshd restart</code>.</p>
+<h3>Utilisation de PuTTY</h3>
+<p>Sur le poste client, on lance PuTTY, on renseigne l'adresse IP du serveur et le port (22 par défaut).</p>
+<p><img src="..\..\SISR\TP1_extracted\images\image_p7_10.png" alt="Interface PuTTY" /></p>
+<p>Une fois connecté, on obtient un terminal distant permettant d'exécuter toutes les commandes système, de modifier des fichiers ou de gérer les mises à jour, avec l'avantage de pouvoir faire des copier-coller depuis le poste client.</p>
+<p><img src="..\..\SISR\TP1_extracted\images\image_p8_11.png" alt="Terminal SSH" /></p>
+<p><img src="..\..\SISR\TP1_extracted\images\image_p8_12.png" alt="Terminal SSH Connecté" /></p>
+<hr />
+<h2>Synthèse : Comparatif des Solutions</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Solution</th>
+<th style="text-align:left">Avantages</th>
+<th style="text-align:left">Inconvénients</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>UltraVNC</strong></td>
+<td style="text-align:left">Gratuit, très configurable, léger.</td>
+<td style="text-align:left">Interface austère, configuration initiale plus complexe, moins sécurisé par défaut.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>TeamViewer</strong></td>
+<td style="text-align:left">Très simple (ID/MDP), traverse les pare-feux facilement, transfert de fichiers.</td>
+<td style="text-align:left">Payant pour usage commercial, dépendance aux serveurs de l'éditeur.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>RDP (Bureau à distance)</strong></td>
+<td style="text-align:left">Intégré à Windows, performant, gratuit.</td>
+<td style="text-align:left">Déconnecte l'utilisateur local, nécessite une configuration réseau (redirection de ports) pour l'accès externe.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>SSH</strong></td>
+<td style="text-align:left">Standard, très sécurisé, rapide, scriptable.</td>
+<td style="text-align:left">Ligne de commande uniquement (CLI), nécessite des compétences système.</td>
+</tr>
+</tbody>
+</table>
+
+    </div>
+</body>
+</html>

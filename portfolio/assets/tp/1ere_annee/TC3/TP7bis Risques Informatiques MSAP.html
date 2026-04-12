@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP7bis Risques Informatiques MSAP</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP7bis : Analyse des Risques et Sécurisation - Cas MSAP</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC3</p>
+<hr />
+<h2>1. Identification des Risques (Audit de la MSAP)</h2>
+<p>L'analyse des documents de la Maison de Services Au Public (MSAP) a permis de mettre en évidence plusieurs vulnérabilités critiques.</p>
+<h3>1.1 Failles de Comportement</h3>
+<ul>
+<li><strong>Gestion des mots de passe</strong> : Un mot de passe (&quot;123456&quot;) collé sur un clavier a été identifié. C'est une faille majeure de sécurité physique et logique. Un attaquant peut usurper l'identité de l'agent et accéder à des données sensibles (Impôts, Assurance Maladie, etc.).</li>
+<li><strong>Identification générique</strong> : L'identifiant de connexion est le nom de l'organisme. Sans identifiant personnel unique, la traçabilité des actions est impossible et la sécurité repose uniquement sur le mot de passe.</li>
+</ul>
+<h3>1.2 Risques Techniques et Organisationnels</h3>
+<ul>
+<li><strong>BYOD (Bring Your Own Device)</strong> : L'autorisation d'utiliser des équipements personnels non supervisés par l'administrateur (M. Jivon) expose le réseau à des malwares et des fuites de données.</li>
+<li><strong>Ingénierie Sociale</strong> : La réception de courriels suspects (Phishing) expose les agents à l'usurpation de compte si le personnel n'est pas formé.</li>
+</ul>
+<hr />
+<h2>2. Analyse des Configurations de Sécurité</h2>
+<h3>Postes du Bureau 4</h3>
+<ul>
+<li><strong>Protection en temps réel</strong> : Actuellement désactivée. <strong>Action :</strong> Doit être réactivée impérativement pour bloquer les malwares à l'exécution.</li>
+<li><strong>Notifications</strong> : Désactivées. <strong>Action :</strong> Devraient être activées pour alerter l'utilisateur en cas de détection.</li>
+</ul>
+<h3>Salle Multimédia</h3>
+<ul>
+<li><strong>Pare-feu (Connexions entrantes)</strong> : Désactivé. <strong>Action :</strong> Risque élevé d'intrusion. L'activation est indispensable.</li>
+<li><strong>Contrôle des applications/navigateur</strong> : Désactivé. <strong>Action :</strong> Danger de téléchargement de contenus malveillants par le public. À activer.</li>
+</ul>
+<hr />
+<h2>3. Note de Service n°1</h2>
+<p><strong>De :</strong> Lucas Lestiennes
+<strong>À :</strong> M. Brillat
+<strong>Date :</strong> 04/12/2024
+<strong>Objet :</strong> Audit de sécurité et préconisations pour la MSAP</p>
+<p>M. Brillat,</p>
+<p>Suite à mon analyse de la MSAP de la commune de Marut, j'ai relevé plusieurs failles de sécurité préoccupantes mettant en péril les données des usagers.</p>
+<p><strong>Mes recommandations immédiates :</strong></p>
+<ol>
+<li><strong>Formation des agents</strong> : Il est crucial de sensibiliser le personnel aux règles d'hygiène informatique (ne pas noter les mots de passe, détecter le phishing).</li>
+<li><strong>Authentification forte</strong> : Nous devons abandonner les identifiants génériques au profit de comptes nominatifs avec des mots de passe complexes.</li>
+<li><strong>Encadrement du BYOD</strong> : Cette pratique doit être soit interdite, soit strictement isolée sur un réseau invité (VLAN) sans accès au SI de la MSAP.</li>
+<li><strong>Durcissement des postes</strong> : Les paramètres de protection en temps réel et les pare-feux locaux doivent être verrouillés par stratégie de groupe (GPO).</li>
+</ol>
+<p>L'installation d'un antivirus centralisé et d'un filtrage de courrier antispam est également recommandée pour renforcer notre périmètre de défense.</p>
+<p>Cordialement,
+Lucas Lestiennes</p>
+
+    </div>
+</body>
+</html>

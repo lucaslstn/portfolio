@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP7 Etude des protocoles OSI</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP7 : Étude des Protocoles OSI et TCP/IP</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC1</p>
+<hr />
+<h2>1. Contexte de l'Étude</h2>
+<p>Nous analysons les échanges de données au sein de la société <strong>ANMICH</strong> basée à Toulouse. L'étude porte sur le cheminement des paquets entre un poste client (<code>Atelier-2</code>) et un serveur central (<code>SERVEUR DIDESC</code>) hébergeant un service web.</p>
+<h3>Inventaire des Adresses</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Hôte</th>
+<th style="text-align:left">Adresse IP</th>
+<th style="text-align:left">Adresse MAC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Atelier-2</strong></td>
+<td style="text-align:left">172.16.1.2</td>
+<td style="text-align:left">0010.1130.DAB2</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>SERVEUR DIDESC</strong></td>
+<td style="text-align:left">192.168.254.1</td>
+<td style="text-align:left">0000.0CE4.16B4</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>ROUT-CLI (Atelier)</strong></td>
+<td style="text-align:left">172.16.255.254</td>
+<td style="text-align:left">0002.1609.2E01</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>ROUT-CLI (WAN)</strong></td>
+<td style="text-align:left">10.10.10.2</td>
+<td style="text-align:left">0002.1609.2E02</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>ROUT-SERV (WAN)</strong></td>
+<td style="text-align:left">10.10.10.1</td>
+<td style="text-align:left">0004.9A5B.4801</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>ROUT-SERV (Serveur)</strong></td>
+<td style="text-align:left">192.168.254.254</td>
+<td style="text-align:left">0004.9A5B.4802</td>
+</tr>
+</tbody>
+</table>
+<p><img src="..\..\TC1\TP7_extracted\images\image_p1_1.png" alt="Topologie du réseau" /></p>
+<hr />
+<h2>2. Analyse des Flux</h2>
+<h3>2.1 Requête DNS (Atelier-2 vers Serveur)</h3>
+<p>L'utilisateur tente de joindre <code>www.ozenne.com</code>. Le paquet DNS est généré à la couche Application (port 53).</p>
+<p><strong>Au niveau des équipements :</strong></p>
+<ul>
+<li><strong>Hub</strong> : Diffuse la trame sur tous ses ports sans modification.</li>
+<li><strong>Switch</strong> : Transmet la trame vers le routeur en fonction de sa table MAC.</li>
+<li><strong>Routeur CLI</strong> : Reçoit la trame sur son interface LAN. Il modifie l'entête de la couche 2 (Liaison) : l'adresse MAC source devient celle de son interface WAN et l'adresse MAC destination devient celle de l'interface WAN du routeur suivant (<code>ROUT-SERV</code>).</li>
+<li><strong>Routeur SRV</strong> : Procède de même pour acheminer le paquet vers le serveur final. L'adresse MAC destination finale est celle du serveur <code>DIDESC</code>.</li>
+</ul>
+<h3>2.2 Requête HTTP</h3>
+<p>Une fois l'IP obtenue via le DNS, le client émet une requête HTTP (port 80).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Couche</th>
+<th style="text-align:left">Détails (Sortie Atelier-2)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Application</strong></td>
+<td style="text-align:left">GET / HTTP/1.1 (Demande de page HTML)</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Transport</strong></td>
+<td style="text-align:left">Port Source: 1026 / Port Dest: 80</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Réseau</strong></td>
+<td style="text-align:left">IP Source: 172.16.1.2 / IP Dest: 192.168.254.1</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Liaison</strong></td>
+<td style="text-align:left">MAC Source: 0010.1130.DAB2 / MAC Dest: 0002.1609.2E01</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. Le Protocole ARP (Address Resolution Protocol)</h2>
+<p>Si une table ARP est vide, le système émet une requête ARP en <strong>broadcast</strong> (<code>FFFF.FFFF.FFFF</code>). Tous les équipements du segment reçoivent la demande, mais seul celui possédant l'IP recherchée répondra.</p>
+<p><strong>Points clés :</strong></p>
+<ul>
+<li>Les routeurs sont les seuls équipements à modifier les adresses MAC (Couche 2) lors du passage d'un réseau à un autre.</li>
+<li>Les adresses IP (Couche 3) restent inchangées de bout en bout.</li>
+<li>Une fois le réseau &quot;cartographié&quot; par l'ARP, les échanges suivants sont plus rapides car les adresses MAC sont mises en cache.</li>
+</ul>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP6 Simulation DNS ARP HTTP</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP6 : Analyse des Flux DNS, ARP et HTTP</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC1</p>
+<hr />
+<h2>1. Émission d'une Requête DNS</h2>
+<p>Lorsqu'un utilisateur saisit une URL (ex: <code>www.ozenne.com</code>) sur son poste (<code>PC0</code>), le système doit d'abord obtenir l'adresse IP correspondante.</p>
+<ol>
+<li>Le poste vérifie sa table ARP pour obtenir l'adresse MAC de sa passerelle par défaut.</li>
+<li>La requête DNS est encapsulée et envoyée vers le serveur DNS via les différents routeurs du réseau.</li>
+</ol>
+<p><img src="..\..\TC1\TP6_extracted\images\image_p1_1.png" alt="Flux DNS Initial" />
+<img src="..\..\TC1\TP6_extracted\images\image_p1_2.png" alt="Entête Trame DNS" />
+<img src="..\..\TC1\TP6_extracted\images\image_p1_3.png" alt="Détail Requête DNS" /></p>
+<hr />
+<h2>2. Échange ARP Intermédiaire</h2>
+<p>Au cours du routage, si un routeur (ex: <code>Routeur2</code>) connaît l'IP de destination (le serveur DNS) mais pas son adresse MAC, il met la requête DNS en attente et émet une <strong>requête ARP</strong>.</p>
+<ul>
+<li><strong>ARP Request</strong> : &quot;Qui possède l'IP 192.168.2.202 ? Répondez à [MAC_Routeur]&quot;.</li>
+<li><strong>ARP Reply</strong> : Le serveur DNS répond avec son adresse MAC.</li>
+</ul>
+<p>Une fois la table ARP à jour, le routeur peut transmettre la requête DNS au serveur.</p>
+<p><img src="..\..\TC1\TP6_extracted\images\image_p2_4.png" alt="Processus ARP" />
+<img src="..\..\TC1\TP6_extracted\images\image_p2_5.png" alt="Entête ARP Request" />
+<img src="..\..\TC1\TP6_extracted\images\image_p2_6.png" alt="Entête ARP Reply" />
+<img src="..\..\TC1\TP6_extracted\images\image_p2_7.png" alt="Diffusion ARP" /></p>
+<hr />
+<h2>3. Résolution DNS et Réponse</h2>
+<p>Le serveur DNS traite la demande et renvoie une réponse contenant l'adresse IP associée au nom de domaine. Le <code>PC0</code> reçoit cette information et peut désormais initier la communication réelle.</p>
+<p><img src="..\..\TC1\TP6_extracted\images\image_p3_8.png" alt="Envoi Réponse DNS" />
+<img src="..\..\TC1\TP6_extracted\images\image_p3_9.png" alt="Réception IP via DNS" /></p>
+<hr />
+<h2>4. Requête HTTP</h2>
+<p>Maintenant que <code>PC0</code> connaît l'IP du serveur web (ex: <code>192.168.1.254</code>), il émet une requête HTTP (GET) pour récupérer la page d'accueil du site.</p>
+<p><img src="..\..\TC1\TP6_extracted\images\image_p4_10.png" alt="Émission HTTP" />
+<img src="..\..\TC1\TP6_extracted\images\image_p4_11.png" alt="Encapsulation HTTP" />
+<img src="..\..\TC1\TP6_extracted\images\image_p4_12.png" alt="Réception Page Web" /></p>
+<p>Les captures ci-dessous montrent les détails de la trame HTTP circulant entre le client et le serveur.</p>
+<p><img src="..\..\TC1\TP6_extracted\images\image_p4_14.png" alt="Détail PDU HTTP 2" /></p>
+<p><strong>Conclusion :</strong> La communication a réussi. Le site est affiché sur le navigateur du <code>PC0</code>. Le test est également validé pour le <code>PC1</code>.</p>
+
+    </div>
+</body>
+</html>

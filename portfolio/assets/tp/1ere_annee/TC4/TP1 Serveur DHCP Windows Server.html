@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP1 Serveur DHCP Windows Server</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP1 : Installation et Configuration d'un Serveur DHCP</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC4</p>
+<hr />
+<h2>1. Introduction au service DHCP</h2>
+<p>Le protocole <strong>DHCP</strong> (Dynamic Host Configuration Protocol) est essentiel pour l'automatisation de la configuration réseau. Un serveur DHCP attribue dynamiquement aux clients :</p>
+<ul>
+<li>Une adresse IP unique.</li>
+<li>Un masque de sous-réseau.</li>
+<li>L'adresse de la passerelle par défaut.</li>
+<li>Les adresses des serveurs DNS.</li>
+</ul>
+<p>Pour ce TP, nous utilisons deux machines virtuelles sous VirtualBox (Windows Server 2022 pour le serveur, Windows 11 pour le client), configurées en &quot;Réseau Interne&quot;.</p>
+<hr />
+<h2>2. Configuration de l'Étendue (Scope)</h2>
+<h3>2.1 Plage d'adresses et Exclusions</h3>
+<p>Nous définissons l'étendue des adresses que le serveur peut distribuer. Pour réserver des adresses à des serveurs ou des imprimantes (adressage statique), nous configurons des <strong>exclusions</strong>.</p>
+<p>![[{F945586C-2D5F-4210-9400-7756E48ABF82}.png]]</p>
+<ul>
+<li><strong>Exclusion</strong> : On définit une borne de début et de fin. Ces adresses ne seront jamais distribuées par le DHCP.</li>
+</ul>
+<p><img src="..\..\TC4\image_tp1_0_2.png" alt="Sauvegarde Incrémentale" /></p>
+<h3>2.2 Gestion du Bail (Lease)</h3>
+<p>Le bail est la durée de validité de l'adresse IP accordée au client. À l'expiration du bail, le client doit renouveler sa demande.</p>
+<p><img src="..\..\TC4\image_tp1_0_3png" alt="Sauvegarde Incrémentale" />
+<img src="..\..\TC4\image_tp1_0_4png" alt="Sauvegarde Incrémentale" /></p>
+<hr />
+<h2>3. Options et Réservations</h2>
+<h3>3.1 Options d'étendue</h3>
+<p>Le DHCP permet de pousser des paramètres supplémentaires, notamment la <strong>passerelle par défaut</strong> (Router) indispensable pour sortir du sous-réseau local.</p>
+<h3>3.2 Réservation d'IP</h3>
+<p>Pour certains postes nécessitant une IP fixe mais gérée de manière centralisée, on utilise la <strong>réservation</strong>. L'adresse IP est liée à l'adresse MAC de la carte réseau du client.</p>
+<p><img src="..\..\TC4\image_tp1_0_5png" alt="Sauvegarde Incrémentale" />
+<img src="..\..\TC4\image_tp1_0_6png" alt="Sauvegarde Incrémentale" /></p>
+<hr />
+<h2>4. Validation du Fonctionnement</h2>
+<p>Une fois le service configuré et activé, nous vérifions que le client Windows 11 reçoit bien sa configuration. La validation finale se fait par des tests de connectivité (Ping) entre le client et le serveur.
+<img src="..\..\TC4\image_tp1_0_7png" alt="Sauvegarde Incrémentale" />
+<img src="..\..\TC4\image_tp1_0_8png" alt="Sauvegarde Incrémentale" /></p>
+
+    </div>
+</body>
+</html>

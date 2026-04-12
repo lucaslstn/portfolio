@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP4 Services Réseau DNS DHCP</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP4 : Services Réseau (DNS, HTTP, DHCP)</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC1</p>
+<hr />
+<h2>Tâche 1 : Configuration des Services Serveur</h2>
+<h3>Étape 1 : Service DNS (Domain Name System)</h3>
+<p><strong>Objectif :</strong> Rendre le serveur <code>SERVEUR-DIDESC</code> accessible via un nom de domaine plutôt que par son IP.
+<strong>Mise en place :</strong></p>
+<ol>
+<li>Activation du service DNS sur le serveur.</li>
+<li>Création de l'enregistrement associant le nom de domaine à l'adresse IP du serveur.</li>
+<li>Configuration des clients (postes de travail) pour utiliser l'adresse IP de ce serveur DNS.
+<strong>Validation :</strong> Un ping vers le nom de domaine répond correctement, prouvant la résolution de nom.</li>
+</ol>
+<h3>Étape 2 : Services HTTP et DHCP</h3>
+<p>Nous ajoutons un nouveau serveur nommé <code>MICANI</code> pour héberger un site web et gérer l'adressage IP dynamique.</p>
+<h4>Service DNS (Rappel)</h4>
+<p>Le DNS joue le rôle d'annuaire. Pour le site <code>www.ozenne.com</code>, le serveur DNS <code>DIDESC</code> renvoie l'IP du serveur web <code>MICANI</code>. Sans cela, l'utilisateur devrait retenir l'IP du serveur web.</p>
+<h4>Service HTTP (Web)</h4>
+<p>Ce service héberge les fichiers du site internet (HTML/CSS). Lorsqu'un client demande <code>www.ozenne.com</code>, le service HTTP du serveur <code>MICANI</code> envoie les pages web à afficher.</p>
+<h4>Service DHCP (Dynamic Host Configuration Protocol)</h4>
+<p><strong>Rôle :</strong> Automatiser la configuration IP des clients.
+<strong>Configuration :</strong></p>
+<ul>
+<li>Définition d'une plage d'adresses (pool).</li>
+<li>Définition de la passerelle par défaut et du serveur DNS à fournir.</li>
+<li>Activation du service.
+<strong>Résultat :</strong> Les postes de l'atelier récupèrent automatiquement une adresse IP valide dès leur connexion au réseau, sans configuration manuelle.</li>
+</ul>
+<hr />
+<h2>Tâche 2 : Interconnexion des Routeurs</h2>
+<h3>Ajout d'interfaces Séries</h3>
+<p>L'ajout de cartes d'interface série sur <code>ROUT-CLI</code> et <code>ROUT-SERV-B</code> permet de relier physiquement les réseaux distants via une liaison WAN dédiée.
+Si la connexion ne fonctionne pas immédiatement, cela indique souvent un problème de configuration d'interface (activation &quot;no shutdown&quot;) ou de protocole de routage manquant.</p>
+
+    </div>
+</body>
+</html>

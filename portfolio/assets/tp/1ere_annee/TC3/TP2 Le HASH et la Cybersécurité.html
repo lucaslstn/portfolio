@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP2 Le HASH et la Cybersécurité</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP2 : Le Hash en Informatique</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC3</p>
+<hr />
+<h2>1. Définition du Hash</h2>
+<p>Le <strong>hachage</strong> (ou hash) est un procédé cryptographique qui consiste à transformer un fichier ou une donnée de n'importe quelle taille en une chaîne de caractères alphanumérique de longueur fixe. Cette chaîne est appelée <strong>empreinte numérique</strong> ou <em>digest</em>.</p>
+<p><strong>Propriété fondamentale :</strong> Le moindre changement dans la donnée source (même un seul bit) produit un hash totalement différent. Il est techniquement impossible de retrouver la donnée originale à partir de son hash (c'est une fonction à sens unique).</p>
+<h3>Algorithmes courants</h3>
+<p>Plusieurs algorithmes existent, offrant des niveaux de sécurité variés :</p>
+<ul>
+<li><strong>MD5</strong> (obsolète pour la sécurité, utilisé pour l'intégrité simple).</li>
+<li><strong>SHA-1</strong> (déconseillé).</li>
+<li><strong>SHA-256 / SHA-512</strong> (standards actuels robustes).</li>
+<li><strong>SHA-3</strong> (dernière génération).</li>
+</ul>
+<hr />
+<h2>2. Utilités du Hachage</h2>
+<h3>Vérification de l'intégrité</h3>
+<p>Le hash permet de s'assurer qu'un fichier n'a pas été corrompu lors d'un transfert ou modifié par une personne malveillante. En comparant le hash d'un fichier téléchargé avec celui fourni par l'éditeur, on garantit l'intégrité des données.</p>
+<h3>Stockage des mots de passe</h3>
+<p>Pour des raisons de sécurité, les sites web ne stockent jamais les mots de passe en clair dans leurs bases de données. Ils stockent uniquement le <strong>hash</strong> du mot de passe.</p>
+<ul>
+<li>Lors de la connexion, le système hache le mot de passe saisi et le compare au hash stocké.</li>
+<li><strong>Avantage :</strong> Si la base de données est piratée, l'attaquant ne récupère que des empreintes inutilisables en l'état, protégeant ainsi l'accès aux comptes utilisateurs.</li>
+</ul>
+<hr />
+<h2>3. Conclusion</h2>
+<p>Le hachage est un pilier de la cybersécurité. Il assure à la fois la protection des secrets (mots de passe) et la validation de l'authenticité des fichiers, garantissant ainsi la confiance dans les échanges numériques.</p>
+
+    </div>
+</body>
+</html>

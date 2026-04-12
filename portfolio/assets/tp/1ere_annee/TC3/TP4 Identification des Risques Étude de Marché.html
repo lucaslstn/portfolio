@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP4 Identification des Risques Étude de Marché</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP4 : Analyse des Risques - Étude de Marché Centre-Call</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> TC3
+<strong>Date :</strong> Janvier 2024</p>
+<hr />
+<h2>1. Analyse du Processus et Vulnérabilités</h2>
+<p>La société <strong>Centre-Call</strong> réalise des études de marché via un processus nommé <strong>PIA</strong>. Ce traitement manipule des données à caractère personnel (DCP) sensibles : identité du client, enregistrements audio, réponses aux enquêtes.</p>
+<h3>Vulnérabilités identifiées :</h3>
+<ul>
+<li><strong>Postes de travail (ToIP)</strong> : Les téléphones IP et les ordinateurs des opérateurs sont des points d'entrée vulnérables. Un piratage ou l'installation d'un logiciel espion (keylogger) permettrait l'interception des conversations et des données saisies.</li>
+<li><strong>Serveurs de données</strong> : La base de données centralisant les résultats est une cible critique. Une faille de sécurité pourrait mener à une fuite massive d'informations.</li>
+<li><strong>Facteur humain</strong> : L'usurpation d'identité interne ou des erreurs de saisie par le personnel constituent également des risques pour l'intégrité des données.</li>
+</ul>
+<hr />
+<h2>2. Scénarios de Menaces</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">N°</th>
+<th style="text-align:left">Acteur</th>
+<th style="text-align:left">Type de Menace</th>
+<th style="text-align:left">Support</th>
+<th style="text-align:left">Vraisemblance</th>
+<th style="text-align:left">Impact (C/I/D)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>S1</strong></td>
+<td style="text-align:left">Externe</td>
+<td style="text-align:left">Espionnage</td>
+<td style="text-align:left">PC Opérateur</td>
+<td style="text-align:left">2 (Limité)</td>
+<td style="text-align:left">Confidentialité</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>S2</strong></td>
+<td style="text-align:left">Interne (Salarié)</td>
+<td style="text-align:left">Sabotage / Vol</td>
+<td style="text-align:left">Serveur BDD</td>
+<td style="text-align:left">4 (Élevé)</td>
+<td style="text-align:left">C, I, D</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>S3</strong></td>
+<td style="text-align:left">Interne (Non-habilité)</td>
+<td style="text-align:left">Curiosité</td>
+<td style="text-align:left">Serveur BDD</td>
+<td style="text-align:left">1 (Très faible)</td>
+<td style="text-align:left">Confidentialité</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>S4</strong></td>
+<td style="text-align:left">Externe (Hacker)</td>
+<td style="text-align:left">Altération</td>
+<td style="text-align:left">Serveur BDD</td>
+<td style="text-align:left">3 (Moyen)</td>
+<td style="text-align:left">Intégrité</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>S5</strong></td>
+<td style="text-align:left">Externe (DDoS)</td>
+<td style="text-align:left">Interruption</td>
+<td style="text-align:left">Serveur BDD</td>
+<td style="text-align:left">3 (Moyen)</td>
+<td style="text-align:left">Disponibilité</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>3. Évaluation de la Gravité</h2>
+<ol>
+<li><strong>Indisponibilité (S5)</strong> : Gravité 4. L'activité de production dépend entièrement de l'accès aux serveurs. Un arrêt bloque toute l'entreprise.</li>
+<li><strong>Vol de données (S2/S1)</strong> : Gravité 3. Perte de crédibilité majeure et sanctions juridiques possibles (RGPD).</li>
+<li><strong>Altération (S4)</strong> : Gravité 3. Fausse les résultats des études de marché, rendant le travail inutile.</li>
+</ol>
+<hr />
+<h2>4. Note de Synthèse</h2>
+<p><strong>À l'attention de :</strong> Mme. Azri
+<strong>Objet :</strong> Sécurisation du processus de traitement des données personnelles</p>
+<p>Mme. Azri,</p>
+<p>Suite à l'audit du processus PIA, j'ai identifié plusieurs failles critiques concernant la protection des données personnelles. Voici mes recommandations prioritaires :</p>
+<ol>
+<li><strong>Protection contre les attaques DDoS</strong> : Il est impératif d'installer un pare-feu applicatif capable de filtrer le trafic malveillant et de mettre en place des seuils de limitation de requêtes pour garantir la disponibilité de nos serveurs.</li>
+<li><strong>Gestion des accès internes</strong> : Pour prévenir les risques liés à un acte malveillant interne, nous devons appliquer le principe du &quot;moindre privilège&quot;. Chaque salarié ne doit accéder qu'aux données strictement nécessaires à sa mission. Une journalisation des accès doit être activée.</li>
+<li><strong>Sécurisation des terminaux</strong> : Les postes des opérateurs doivent être renforcés (antivirus à jour, blocage des ports USB) et le personnel formé à la détection du phishing pour éviter l'usurpation de comptes.</li>
+</ol>
+<p>Le respect de ces mesures est essentiel pour maintenir la confiance de nos clients et la conformité de Centre-Call au RGPD.</p>
+
+    </div>
+</body>
+</html>

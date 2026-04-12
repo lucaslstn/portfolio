@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TP3 Commandes réseaux et journaux</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f4f4f9;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 { color: #2c3e50; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        code {
+            background-color: #f8f8f8;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Consolas', monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #2d2d2d;
+            color: #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        pre code { color: #ccc; background: none; padding: 0; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th { background-color: #f2f2f2; }
+        blockquote {
+            border-left: 5px solid #ccc;
+            margin: 1.5em 10px;
+            padding: 0.5em 10px;
+            color: #666;
+            background: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>TP3 : Commandes réseaux et journaux d'activité</h1>
+<p><strong>Auteur :</strong> Lucas Lestiennes
+<strong>Module :</strong> SISR (R2)</p>
+<hr />
+<h2>Étape 1 : Diagnostic d'incident système</h2>
+<p><strong>Contexte :</strong> Le responsable du réseau informatique de la société GSB demande de lister les commandes utiles au diagnostic d'incident système sous Windows et Linux.</p>
+<h3>Liste des commandes à analyser</h3>
+<ul>
+<li><code>ping</code></li>
+<li><code>netstat</code></li>
+<li><code>nmap</code> (optionnel)</li>
+<li><code>ipconfig</code> / <code>ifconfig</code> (Linux)</li>
+<li><code>net</code> (optionnel)</li>
+<li><code>netsh</code> (optionnel)</li>
+<li><code>nslookup</code></li>
+<li><code>dig</code> (optionnel)</li>
+<li><code>arp</code></li>
+<li><code>tracert</code> / <code>traceroute</code></li>
+<li><code>nbtstat</code> (optionnel)</li>
+<li><code>ip</code> (commande Linux iproute2)</li>
+</ul>
+<h3>Travail à faire</h3>
+<ol>
+<li><strong>Compatibilité</strong> : Préciser pour chaque commande si elle est utilisable sous Linux, Windows ou les deux.</li>
+<li><strong>Options</strong> : Explorer les options intéressantes pour chaque commande.</li>
+<li><strong>Analyse approfondie du Ping</strong> : Détailler la commande <code>ping</code> et analyser ses différents résultats possibles.</li>
+</ol>
+<hr />
+<h2>Étape 2 : Questions spécifiques</h2>
+<p>Répondre aux questions suivantes :</p>
+<ol>
+<li><strong>Ping continu (Windows)</strong> : Quelle option permet d’envoyer des paquets de façon continue ? Quelle est son utilité ?</li>
+<li><strong>Netstat</strong> : Quelle option permet d’afficher les connexions actives et les ports ouverts sur la machine ?</li>
+<li><strong>Table de routage</strong> : Quelle instruction permet d’afficher la table de routage locale ?</li>
+<li><strong>Cache DNS (Windows)</strong> : Quelle instruction permet de vider le cache DNS local ?</li>
+<li><strong>Résolution inverse</strong> : Quelle instruction permet de trouver un nom de domaine à partir d'une IP ?</li>
+<li><strong>Service Station de travail</strong> : Quelle instruction permet de vérifier si ce service est actif localement ?</li>
+<li><strong>NetBIOS</strong> : Quelle instruction affiche la table des noms NetBIOS résolus localement ? (Quelle différence avec un nom DNS ?)</li>
+<li><strong>Serveur DHCP</strong> : Quelle instruction permet d’identifier le serveur DHCP qui a attribué l’adresse IP ?</li>
+</ol>
+<blockquote>
+<p><strong>Note :</strong> Certaines commandes Linux peuvent nécessiter l'installation du paquet <code>net-tools</code> (<code>sudo apt-get install net-tools</code>).</p>
+</blockquote>
+<hr />
+<h2>Étape 3 : Journaux d'activité</h2>
+<p><strong>Objectif :</strong> Analyser l'activité d'un ordinateur via les journaux système sous Windows et Linux.</p>
+<h3>Travail à faire (sous forme de tableaux)</h3>
+<p>Pour les deux systèmes d'exploitation, préciser :</p>
+<ol>
+<li><strong>Localisation</strong> : Où trouver ces journaux ?</li>
+<li><strong>Pluralité</strong> : Y a-t-il plusieurs journaux ?</li>
+<li><strong>Rôles</strong> : Quel est le rôle de chacun ?</li>
+<li><strong>États</strong> : Quels sont les états possibles pour les événements ?</li>
+<li><strong>Sauvegarde</strong> : Comment sauvegarder/exporter ces journaux ?</li>
+</ol>
+
+    </div>
+</body>
+</html>
